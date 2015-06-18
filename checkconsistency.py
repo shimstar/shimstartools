@@ -264,7 +264,28 @@ class update:
 			cursor.close()
 			self.connexion.commit()
 			
-		print str(nbObj) + " objets supprimes"
+		print str(nbObj) + " slots supprimes"
+		print "#################################"
+		
+		query="SELECT count(*) FROM star021_slot_typeitem WHERE star021_slot_star009 NOT IN (SELECT star009_id FROM star009_slot)"
+		cursor=self.connexion.getConnection().cursor()
+		
+		cursor.execute(query)
+		result_set = cursor.fetchall ()
+		nbObj=0
+		for row in result_set:
+			nbObj=int(row[0])
+		cursor.close()
+		
+		query="delete FROM star021_slot_typeitem WHERE star021_slot_star009 NOT IN (SELECT star009_id FROM star009_slot)"
+				
+		cursor=self.connexion.getConnection().cursor()
+		
+		cursor.execute(query)
+		cursor.close()
+		self.connexion.commit()
+		
+		print str(nbObj) + " slots type supprimes"
 		print "#################################"
 		
 	def runItemWOSlot(self):
